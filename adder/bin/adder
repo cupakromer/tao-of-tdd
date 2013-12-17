@@ -1,3 +1,60 @@
 #!/usr/bin/env ruby
+require 'adder'   # Require our gem
 
-puts "USAGE: adder NUM1 [NUM2] [NUM3]..."
+# Since we are now taking arguments, only show usage if none are provided
+if ARGV.size < 1
+  puts "USAGE: adder NUM1 [NUM2] [NUM3]..."
+  exit false
+end
+
+# We should have an adding machine. At this time the machine doesn't need to be
+# initialized with anything.
+#
+# Since there is no state, it could be argued that we could just make this a
+# class method (or even turn it into a module). While this is true, I prefer to
+# default away from this approach. The main reason being, that using class
+# methods tends to resist refactoring. Many people will argue YAGNI here; YAGNI
+# stands for "You Aren't Gonna Need It". People use this as an argument (the
+# argument) for not doing something. Or making a seemingly easier decision now
+# so they don't have to think about the problem domain any harder.
+#
+# That's not really what YAGNI is for. It's main use is to stop implementing
+# features that were never asked for b/c you _think_ they may be needed. It is
+# also to stop you from trying to do large waterfall design (remember YAGNI was
+# developed in the XP world) up front.
+#
+# However, thinking through a problem domain and making it easier on yourself in
+# the future to add new features is very much something you _should_ be doing.
+#
+# In this respect, I am choosing to use a full object here and not make anything
+# a class method. This way, I am free to refactor / add features later that
+# require a real object. The overhead on creating an object and calling a method
+# is so trivial (when compared with calling said method on the class) that it's
+# a bit silly.
+#
+# Now say, we need to add a receipt feature (remember those long rolls of paper
+# the old adding machines had?) we can add some state to the machine. If we
+# do that, we don't need to change any of this code. We've already laid a more
+# flexible foundation at virtually zero cost. In the spirit of YAGNI, we aren't
+# going to actually do anything for this feature b/c no one asked for it now.
+#
+# For more on YAGNI see:
+#
+#   * http://www.xprogramming.com/Practices/PracNotNeed.html
+#   * http://c2.com/cgi/wiki?YouArentGonnaNeedIt
+#
+old_timey_adding_machine = Adder::Machine.new
+
+# Our machine should respond to `sum` and allow to receive an array of numbers.
+# These can be integers, floats, or numbers represented as Strings.
+#
+# This will return a BigDecimal representation of the sum of all the provided
+# numbers.
+#
+# If Strings are provided, and any fail to convert to numbers this will just
+# convert them to zeros instead of raising an error.
+sum = old_timey_adding_machine.sum(ARGV)
+
+# We'll round the return sum using normal rules, out to 2 decimal places. We
+# will also, always show all decimal places.
+puts "%.2f" % sum.round(2)
