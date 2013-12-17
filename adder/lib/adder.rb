@@ -1,5 +1,5 @@
 require "adder/version"
+require "adder/machine"
 
 module Adder
-  # Your code goes here...
 end
