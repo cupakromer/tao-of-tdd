@@ -1,0 +1,6 @@
+--color
+--require emoji-rspec
+--format <%= ENV['FORMAT'] || %i[ waddles turtles hearts sunshine ].sample %>
+<% if ENV['TAG'] %>
+--tag <%= ENV['TAG'] %>
+<% end %>
