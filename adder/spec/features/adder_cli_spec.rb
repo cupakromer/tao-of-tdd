@@ -20,4 +20,11 @@ describe "Running the adder tool from the command line" do
     expect( exec_io "adder" ).to eq "USAGE: adder NUM1 [NUM2] [NUM3]...\n"
   end
 
+  # In order to check an number identity,
+  # When I run the adder with a single number,
+  # I should see the same number.
+  it "reflects the provided number", :wip do
+    expect( exec_io %w[ adder 132 ] ).to eq "132.00\n"
+  end
+
 end
