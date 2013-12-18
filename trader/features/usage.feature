@@ -17,8 +17,6 @@ Feature: Using Trader
   # is how to interact with the command line tool. So here we simply explain
   # how that works at a very high level.
 
-  # As with any new feature we tag it as a work in progress
-  @wip
   Scenario: Usage Instructions
     # Now we write gherkin to explain how this usage scenario works. The
     # majority of the heavy lifting regarding the steps has already been done
