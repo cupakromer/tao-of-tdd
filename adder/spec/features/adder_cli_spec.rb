@@ -27,4 +27,24 @@ describe "Running the adder tool from the command line" do
     expect( exec_io %w[ adder 132 ] ).to eq "132.00\n"
   end
 
+  # In order to be useful to me,
+  # I need to be able to add multiple numbers, including floating numbers
+  # with arbitrary precision.
+  # I should see the sum to two decimal places.
+  it "sums numbers and floats to two decimal places" do
+    expect( exec_io %w[ adder 1 2.1 3.22 ] ).to eq "6.32\n"
+  end
+
+  # When adding numbers with precision greater than 2 decimal places,
+  # Standard rules for rounding to two decimal places are used.
+  context "rounds sum to two decimal places using standard rounding" do
+    it "rounds up on .5 or greater" do
+      expect( exec_io %w[ adder 1 11.2245 0.4405 ] ).to eq "12.67\n"
+    end
+
+    it "rounds down on .49 or greater" do
+      expect( exec_io %w[ adder 1 11.2245 0.4404 ] ).to eq "12.66\n"
+    end
+  end
+
 end
