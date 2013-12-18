@@ -17,4 +17,14 @@ describe Adder::Machine do
     end
   end
 
+  context "summing several numbers" do
+    # At this point, we can be clever in our choice of test case. We can now
+    # pass in several different types of numbers to verify that they are all
+    # handled correctly.
+    it "returns the arithmetic sum as a BigDecimal without rounding" do
+      expect(machine.sum([100, 32], 1.22212, "53.123149"))
+        .to eq BigDecimal.new("186.345269")
+    end
+  end
+
 end

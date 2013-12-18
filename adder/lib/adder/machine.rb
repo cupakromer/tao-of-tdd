@@ -10,7 +10,7 @@ module Adder
     #
     # Any strings that are non-numeric are treated as zeros.
     def sum(*numbers)
-      numbers.map{ |n| BigDecimal.new(n) }.reduce(:+)
+      numbers.flatten.map{ |n| BigDecimal.new(n.to_s) }.reduce(:+)
     end
   end
 end
