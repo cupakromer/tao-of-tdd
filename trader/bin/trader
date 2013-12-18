@@ -1,3 +1,64 @@
 #!/usr/bin/env ruby
+require 'trader'
+require 'pathname'
 
-puts "USAGE: trader ITEM CURRENCY RATES TRANSACTIONS"
+unless 4 == ARGV.count
+  puts "USAGE: trader ITEM CURRENCY RATES TRANSACTIONS"
+  exit false
+end
+
+# Make it clear what each of the positional arguments are
+item              = ARGV[0]
+currency          = ARGV[1]
+rates_file        = Pathname.new(ARGV[2])
+transactions_file = Pathname.new(ARGV[3])
+
+# We're going to ignore the error conditions for now (these are all sad paths)
+# and we want to focus on the working application (happy path) first.
+#
+# As before this is our chance to write the code we wish we had. None of these
+# classes exist at all. We are free to define how our objects should interact
+# and how we want to interact with them.
+#
+# Unlike the last time, we have a lot more objects. In fact, most of the objects
+# are not even used directly here. That's fine. A large job of the executable is
+# to setup the system. Then put all the pieces together. Our feature spec is
+# what we'll use to make sure all the pieces are properly glued together and
+# communicating.
+
+
+# We'll choose to delegate the parsing of the rates file to an external object.
+# This allows us the freedom to potentially change the implementation later
+# without changing our script.
+#
+# We're going with a class level method here. I know previously we stated that
+# these tend to be bad and that they resist refactoring. So why are we choosing
+# this? Well, we envision it to be a factory method. It's job is to return an
+# object at the exchange expects and can use. With a factory method we don't
+# necessarily expect the returned object to be an instance of `RatesFile`.
+# Additionally, since it's not being used here we're going to "punt" on any
+# further decisions on what is returned until we need it.
+rates = Trader::RatesFile.read(rates_file)
+
+# We know we'll need some sort of exchange that can calculate the conversion of
+# different rates for us. Here we use a class as we expect this to be a
+# a consistent object we can interact with. This could change later but it seems
+# like a safe bet based on current requirements.
+exchange = Trader::Exchange.new(rates)
+
+# As with the rates file, we expect this to be some sort of factory that knows
+# how to parse the file (possibly by inspection then creating other internal
+# parsers based on the file format). Again, as we did previously, we are going
+# to "punt" on what type of object is returned.
+line_items = Trader::TransactionsFile.read(transactions_file)
+
+# Sense a pattern here? We know we need some sort of ledger that keeps track of
+# our line items. Since ledgers deal with money, we often expect to see monetary
+# amounts in them. In order to do this, we expect it needs an exchange system
+# to make sure the calculations are in uniform.
+ledger = Trader::Ledger.new(line_items, exchange)
+
+# Finally we as the ledger our query question, then display the results to two
+# decimal places.  We are leaving any rules on rounding up to the ledger or
+# exchange. We don't care which at this time.
+puts "%.2f" % ledger.sum(currency, sku: item)
