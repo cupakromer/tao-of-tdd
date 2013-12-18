@@ -1,6 +1,6 @@
 # Adder
 
-TODO: Write a gem description
+A simple CLI tool for adding numbers together.
 
 ## Installation
 
@@ -18,12 +18,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To use this tool simple run the executable passing it various numbers:
 
-## Contributing
+    $ adder 1 2 3
+    6.00
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+It will output the sum, rounded using standard rounding, to two decimal places.
+You can also pass it floats of arbitrary precision:
+
+    $ adder 1 11.2245 0.4405
+    12.67
