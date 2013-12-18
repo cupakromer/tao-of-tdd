@@ -23,7 +23,7 @@ describe "Running the adder tool from the command line" do
   # In order to check an number identity,
   # When I run the adder with a single number,
   # I should see the same number.
-  it "reflects the provided number", :wip do
+  it "reflects the provided number" do
     expect( exec_io %w[ adder 132 ] ).to eq "132.00\n"
   end
 

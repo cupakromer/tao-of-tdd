@@ -27,4 +27,10 @@ describe Adder::Machine do
     end
   end
 
+  context "summing non-numeric strings" do
+    it "treats them as zeros" do
+      expect(machine.sum(1, 2, "foo")).to eq 3
+    end
+  end
+
 end
